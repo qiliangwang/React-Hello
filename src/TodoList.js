@@ -19,10 +19,13 @@ class TodoList extends Component {
         return (
             <Fragment>
                 <div>
-                    <input className='input' value={this.state.inputValue}  onChange={this.handleInputChange}/>
+                    <input className='input'
+                           value={this.state.inputValue}
+                           ref={(input) => {this.input = input}}
+                           onChange={this.handleInputChange}/>
                     <button onClick={this.handleAddEvent}>add</button>
                 </div>
-                <ul>
+                <ul ref={(ul) => {this.ul = ul}}>
                     {this.getItemList()}
                 </ul>
             </Fragment>
@@ -32,14 +35,19 @@ class TodoList extends Component {
     getItemList() {
         return this.state.list.map((item, index) => {
             return(
-                <TodoItem content={item} index={index} deleteItem={this.handleItemDelete}/>
+                <TodoItem
+                    content={item}
+                    index={index}
+                    key={index}
+                    deleteItem={this.handleItemDelete}
+                />
             )
         })
     }
     handleInputChange(e) {
-        // this.setState({
-        //     inputValue: e.target.value
-        // })
+        console.log('e.target', e.target)
+        console.log('this.input', this.input)
+
         const value = e.target.value
         this.setState(() => {
             return {
@@ -55,6 +63,8 @@ class TodoList extends Component {
         this.setState({
             list: [...this.state.list, this.state.inputValue],
             inputValue : ''
+        }, () => {
+            console.log(this.ul.querySelectorAll('div'))
         })
     }
 
