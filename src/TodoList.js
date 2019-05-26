@@ -1,79 +1,35 @@
-import React, {Component, Fragment} from 'react';
-import TodoItem from './TodoItem';
-import './style.css';
+import React, {Component} from 'react';
+import {Input, Button, List} from 'antd'
+import 'antd/dist/antd.css'
+
+const data = [
+    'Racing car sprays burning fuel into crowd.',
+    'Japanese princess to wed commoner.',
+    'Australian walks 100km after outback crash.',
+    'Man charged over missing wedding girl.',
+    'Los Angeles battles huge wildfires.',
+];
 
 class TodoList extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputValue: '',
-            list: ['hello', 'wangql', 'learning', 'react']
-        }
-        this.handleInputChange = this.handleInputChange.bind(this)
-        this.handleAddEvent = this.handleAddEvent.bind(this)
-        this.handleItemDelete = this.handleItemDelete.bind(this)
-    }
-
     render() {
         return (
-            <Fragment>
+            <div style={{marginTop: 10, marginLeft: 10}}>
                 <div>
-                    <input className='input'
-                           value={this.state.inputValue}
-                           ref={(input) => {this.input = input}}
-                           onChange={this.handleInputChange}/>
-                    <button onClick={this.handleAddEvent}>add</button>
+                    <Input placeholder='todo info' style={{width: 300, marginRight: 10}}/>
+                    <Button type='primary'>submit</Button>
                 </div>
-                <ul ref={(ul) => {this.ul = ul}}>
-                    {this.getItemList()}
-                </ul>
-            </Fragment>
-        );
-    }
 
-    getItemList() {
-        return this.state.list.map((item, index) => {
-            return(
-                <TodoItem
-                    content={item}
-                    index={index}
-                    key={index}
-                    deleteItem={this.handleItemDelete}
+                <List
+                    style={{width: 300}}
+                    bordered
+                    dataSource={data}
+                    renderItem={item => (
+                        <List.Item>{item}</List.Item>
+                    )}
                 />
-            )
-        })
-    }
-    handleInputChange(e) {
-        console.log('e.target', e.target)
-        console.log('this.input', this.input)
-
-        const value = e.target.value
-        this.setState(() => {
-            return {
-                inputValue: value
-            }
-        })
-    }
-
-    handleAddEvent() {
-        if (this.state.inputValue === '') {
-            return
-        }
-        this.setState({
-            list: [...this.state.list, this.state.inputValue],
-            inputValue : ''
-        }, () => {
-            console.log(this.ul.querySelectorAll('div'))
-        })
-    }
-
-    handleItemDelete(index) {
-        const list = [...this.state.list]
-        list.splice(index, 1)
-        this.setState({
-            list: list
-        })
+            </div>
+        )
     }
 }
 
